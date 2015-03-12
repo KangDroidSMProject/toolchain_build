@@ -405,9 +405,9 @@ GCC_CONFIG_ARGS += --without-ppl --without-cloog --without-isl
 endif
 
 # General configs for all targets
-GCC_CONFIG_ARGS += --enable-version-specific-runtime-libs --enable-threads \
-	$(GCC_CONFIG_LIBSTDCXX_V3) --disable-shared --disable-libssp --disable-libitm \
-	--disable-plugin --disable-docs --disable-nls
+GCC_CONFIG_ARGS += --enable-version-specific-runtime-libs --enable-threads=posix \
+	$(GCC_CONFIG_LIBSTDCXX_V3) --disable-sjlj-exceptions --disable-shared --disable-libssp \
+	--disable-libitm --disable-plugin --disable-docs --disable-nls --disable-tls
 
 ifneq ($(target_os),linux-gnu)
 GCC_CONFIG_ARGS += --disable-libstdc__-v3
@@ -417,17 +417,10 @@ ifneq ($(ENABLE_GOLD),)
 BINUTILS_CONFIG_ARGS += --with-gold-ldflags='-static-libgcc -static-libstdc++'
 endif
 
-LD += -ldl -lpthread -lrt
-CC += -pthread
-CXX += -pthread
-
 # -fno-short-enums does not work on GCC version >=4.9
-ifneq ($(GCC_MIN_VERSION_4_9_0),no)
-CFLAGS_FOR_TARGET += -DTARGET_POSIX_IO
-CXXFLAGS_FOR_TARGET += -DTARGET_POSIX_IO
-else
-CFLAGS_FOR_TARGET += -fno-short-enums -DTARGET_POSIX_IO
-CXXFLAGS_FOR_TARGET += -fno-short-emums -DTARGET_POSIX_IO
+ifeq ($(GCC_MIN_VERSION_4_9_0),no)
+CFLAGS_FOR_TARGET += -fno-short-enums
+CXXFLAGS_FOR_TARGET += -fno-short-emums
 endif
 
 # Android and ARM
