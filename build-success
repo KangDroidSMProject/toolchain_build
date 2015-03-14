@@ -10,7 +10,6 @@
 # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.
 
-
 success ()
 {
     echo "SUCCESS: $@"
@@ -18,22 +17,32 @@ success ()
 
 if [ $SET_TARGET_BUILD = "CLOOG" ];
 then
-
-success "***************ㄅㄩςς∑ㄅㄅ***************
-                                                  
-              CLOOG has successfully built        
-                                                  
-         ***************ㄅㄩςς∑ㄅㄅ***************";
+    echo "";
+    echo "";
+    echo "";
+    success "*****************ㄅㄩςς∑ㄅㄅ*****************
+                                                         
+             CLOOG has successfully built                
+                                                         
+         *****************ㄅㄩςς∑ㄅㄅ*****************";
+    echo "";
+    echo "";
+    echo "";
 fi;
 
 if [ $SET_TARGET_BUILD = "GCC" ];
 then
-
-success "***************ㄅㄩςς∑ㄅㄅ***************
-                                                  
-                GCC has successfully built        
-                The toolchain is located at       
-                $PREFIX_PATH                      
-                                                  
-         ***************ㄅㄩςς∑ㄅㄅ***************";
+    echo "";
+    echo "";
+    echo "";
+    success "*****************ㄅㄩςς∑ㄅㄅ*****************
+                                                         
+             GCC has successfully built                  
+             The toolchain is located at:                
+             $PREFIX_PATH                                
+                                                         
+         *****************ㄅㄩςς∑ㄅㄅ*****************";
+    echo "";
+    echo "";
+    echo "";
 fi;

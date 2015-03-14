@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (C) 2014 The SaberMod Project
+# Copyright (C) 2014-2015 The SaberMod Project
 # This file is free software; The SaberMod Project
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -18,28 +18,52 @@ panic ()
 
 if [ $SET_TARGET_BUILD = "CLOOG" ];
 then
-
-panic "*******************************ﾓ∆ⅰﾚㄩЯ∑*******************************
-                                                                             
-       Sorry your build failed because                                       
-       cloog failed to build the required                                    
-       libraries.  Read:                                               
-       https://gitlab.com/SaberMod/sabermod-manifest/blob/master/README.md   
-       for system requirements and instructions.                             
-                                                                             
-       *******************************ﾓ∆ⅰﾚㄩЯ∑*******************************";
+    echo "";
+    echo "";
+    echo "";
+    panic "**********************************ﾓ∆ⅰﾚㄩЯ∑**********************************
+                                                                                      
+           Sorry your build failed because                                            
+           cloog failed to build the required                                         
+           libraries.  Read:                                                          
+           https://gitlab.com/SaberMod/sabermod-manifest/blob/master/README.md        
+           for system requirements and instructions.                                  
+                                                                                      
+           If you feel up to it, go ahead and send the logs to:                       
+           sabermod.team@gmail.com                                                    
+           for assistance.                                                            
+                                                                                      
+           Log is located at:                                                         
+           $MAKE_LOG                                                                  
+                                                                                      
+       **********************************ﾓ∆ⅰﾚㄩЯ∑**********************************";
+    echo "";
+    echo "";
+    echo "";
 fi;
 
 if [ $SET_TARGET_BUILD = "GCC" ];
 then
-
-panic "*******************************ﾓ∆ⅰﾚㄩЯ∑*******************************
-                                                                             
-       GCC has failed to build                                               
-       Read:                                                           
-       https://gitlab.com/SaberMod/sabermod-manifest/blob/master/README.md   
-       for system requirements and instructions.                             
-                                                                             
-       *******************************ﾓ∆ⅰﾚㄩЯ∑*******************************";
+    echo "";
+    echo "";
+    echo "";
+    panic "**********************************ﾓ∆ⅰﾚㄩЯ∑**********************************
+                                                                                      
+           GCC has failed to build                                                    
+           Read:                                                                      
+           https://gitlab.com/SaberMod/sabermod-manifest/blob/master/README.md        
+           for system requirements and instructions.                                  
+                                                                                      
+           If you feel up to it, go ahead and send the logs to:                       
+           sabermod.team@gmail.com                                                    
+           for assistance.                                                            
+                                                                                      
+           Log is located at:                                                         
+           $MAKE_LOG                                                                  
+                                                                                      
+       **********************************ﾓ∆ⅰﾚㄩЯ∑**********************************";
+    echo "";
+    echo "";
+    echo "";
 fi;
 
