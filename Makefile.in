@@ -512,7 +512,7 @@ stmp-config-target-gcc: config.status stmp-install-host-isl stmp-build-target-bi
 	$(STAMP) $@
 endif
 build-target-gcc: stmp-build-target-gcc
-stmp-build-target-gcc: stmp-config-target-gcc
+stmp-build-target-gcc: stmp-config-target-gcc install-target-binutils
 	($(canadian_env) \
 	 $(MAKE) -C ${GCC_VERSION} \
 		CFLAGS_FOR_TARGET="$(CFLAGS_FOR_TARGET)" \
@@ -523,7 +523,7 @@ stmp-build-target-gcc: stmp-config-target-gcc
 install-target-gcc-gcc: stmp-build-target-gcc
 	($(canadian_env) \
 	 $(MAKE) -C ${GCC_VERSION} $(gcc_install_target))
-install-target-gcc: install-target-gcc-gcc $(install-target-gcc-multilibs) install-target-binutils
+install-target-gcc: install-target-gcc-gcc $(install-target-gcc-multilibs)
 
 # minimal gcc rules
 # minimal gcc only builds the C and C++ compilers and libgcc
