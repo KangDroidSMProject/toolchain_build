@@ -30,6 +30,21 @@ then
     echo "";
 fi;
 
+if [ $SET_TARGET_BUILD = "ISL" ];
+then
+    echo "";
+    echo "";
+    echo "";
+    success "*****************ㄅㄩςς∑ㄅㄅ*****************
+                                                         
+             ISL has successfully built                  
+                                                         
+         *****************ㄅㄩςς∑ㄅㄅ*****************";
+    echo "";
+    echo "";
+    echo "";
+fi;
+
 if [ $SET_TARGET_BUILD = "GCC" ];
 then
     echo "";

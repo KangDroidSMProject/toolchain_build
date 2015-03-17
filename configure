@@ -6,7 +6,7 @@
 # 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 Free Software
 # Foundation, Inc.
 
-# Copyright (C) 2014-2015 The SaberMod Project
+# Copyright (C) 2013-2015 The SaberMod Project
 
 #Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -2642,8 +2642,10 @@ fi
 fi
 
 if test "$ENABLE_GRAPHITE" == "yes"; then
+# GCC 5.x.x does not require cloog
+if test "$GCC_MIN_VERSION_5_0_0" == "no"; then
 # cloog-ppl or cloog version (default is 0.15.9)
-# cloog is only used for gcc 4.5+ with graphite optimization.
+# cloog is only used for gcc 4.5-4.9 with graphite optimization.
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking cloog version" >&5
 $as_echo_n "checking cloog version... " >&6; }
 
@@ -2652,12 +2654,11 @@ if test "${with_cloog_version+set}" = set; then :
   withval=$with_cloog_version; if test x"$withval" != x ; then
      CLOOG_VERSION="$withval"
    fi
+# CLooG 0.16+ has its own embedded polyhedral library
+CLOOG_BACKEND="--enable-cloog-backend=isl"
 else
   CLOOG_VERSION="0.15.9"
 fi
-
-# CLooG 0.16+ has its own embedded polyhedral library
-CLOOG_BACKEND="--enable-cloog-backend=isl"
 
 x=cloog-${CLOOG_VERSION}; tool=$(echo "$x" | sed -e 's/-.*//'); version=$(echo "$x" | sed -e 's/[^-]*-//'); \
 if test \( ! -d $srcdir/../$tool/cloog-${CLOOG_VERSION} \) -a \( x"$version" != x"none"  \) ; then
@@ -2682,7 +2683,7 @@ if test \( ! -d $srcdir/../$tool/cloog-${CLOOG_VERSION} \) -a \( x"$version" != 
   fi
 fi
 fi
-
+fi
 
 if test "$ENABLE_GRAPHITE" == "yes"; then
 # isl version (default is 0.11.1)

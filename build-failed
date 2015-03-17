@@ -41,6 +41,32 @@ then
     echo "";
 fi;
 
+if [ $SET_TARGET_BUILD = "ISL" ];
+then
+    echo "";
+    echo "";
+    echo "";
+    panic "**********************************ﾓ∆ⅰﾚㄩЯ∑**********************************
+                                                                                      
+           Sorry your build failed because                                            
+           ISL failed to build the required                                           
+           libraries.  Read:                                                          
+           https://gitlab.com/SaberMod/sabermod-manifest/blob/master/README.md        
+           for system requirements and instructions.                                  
+                                                                                      
+           If you feel up to it, go ahead and send the logs to:                       
+           sabermod.team@gmail.com                                                    
+           for assistance.                                                            
+                                                                                      
+           Log is located at:                                                         
+           $MAKE_LOG                                                                  
+                                                                                      
+       **********************************ﾓ∆ⅰﾚㄩЯ∑**********************************";
+    echo "";
+    echo "";
+    echo "";
+fi;
+
 if [ $SET_TARGET_BUILD = "GCC" ];
 then
     echo "";
