@@ -26,7 +26,7 @@ echo '# Copyright (C) 2015 The SaberMod Project
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # Empty makefile here prevents Android.mk in subdirectories from being
-# unconditionally included.' > $PREFIX_PATH/Android.mk;
+# unconditionally included.' > $TOOLCHAIN_PREFIX_PATH/Android.mk;
 
 echo '# Copyright (C) 2015 The SaberMod Project
 #
@@ -46,7 +46,7 @@ include $(CLEAR_VARS)
 	LOCAL_PREBUILT_LIBS := \
 		libiberty.a
 LOCAL_MODULE_TAGS := optional
-include $(BUILD_HOST_PREBUILT)' > $PREFIX_PATH/lib/Android.mk;
+include $(BUILD_HOST_PREBUILT)' > $TOOLCHAIN_PREFIX_PATH/lib/Android.mk;
 
 echo '# Copyright (C) 2015 The SaberMod Project
 #
@@ -62,7 +62,7 @@ echo '# Copyright (C) 2015 The SaberMod Project
 # See the License for the specific language governing permissions and
 # limitations under the License.
 LOCAL_PATH := $(call my-dir)
-include $(call all-makefiles-under, $(LOCAL_PATH))' > $PREFIX_PATH/toolchain.mk;
+include $(call all-makefiles-under, $(LOCAL_PATH))' > $TOOLCHAIN_PREFIX_PATH/toolchain.mk;
 
 echo '# Copyright (C) 2015 The SaberMod Project
 #
@@ -82,5 +82,5 @@ include $(CLEAR_VARS)
 	LOCAL_PREBUILT_LIBS := \
 		libbfd.a
 LOCAL_MODULE_TAGS := optional
-include $(BUILD_HOST_PREBUILT)' > $PREFIX_PATH/x86_64-linux-gnu/arm-linux-androideabi/lib/Android.mk;
+include $(BUILD_HOST_PREBUILT)' > $TOOLCHAIN_PREFIX_PATH/x86_64-linux-gnu/arm-linux-androideabi/lib/Android.mk;
 

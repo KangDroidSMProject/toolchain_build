@@ -39,7 +39,7 @@ then
                                                          
              GCC has successfully built                  
              The toolchain is located at:                
-             $PREFIX_PATH                                
+             $TOOLCHAIN_PREFIX_PATH                      
                                                          
          *****************ㄅㄩςς∑ㄅㄅ*****************";
     echo "";

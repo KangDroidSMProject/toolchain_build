@@ -12,8 +12,7 @@
 
 panic ()
 {
-    echo "ERROR: $@"
-    exit 1
+    echo "ERROR: $@";
 }
 
 if [ $SET_TARGET_BUILD = "CLOOG" ];
