@@ -444,7 +444,7 @@ endif
 ifeq (arm,$(target_cpu))
 ifneq ($(target_os),linux-androideabi)
 GCC_CONFIG_ARGS += --with-abi=aapcs
-TARGET_ARCH := arm-eabi
+TARGET_ARCH := arm-linux-gnueabi
 else
 TARGET_ARCH := arm-linux-androideabi
 endif
