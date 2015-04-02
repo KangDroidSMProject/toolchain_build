@@ -146,22 +146,26 @@ endif
 FIND_TARGET_LD=\
 	`[ -d $(TARGET_BINUTILS_BUILDDIR)/gold ] && echo "gold" || echo "ld"`
 
-# We export these insteading when configuring target gcc and newlib
+# We export these instead when configuring target gcc and newlib
 TARGET_BINUTILS_EXPORTS= \
 export	AS_FOR_TARGET=$(TARGET_BINUTILS_BUILDDIR)/gas/as-new \
-	LD_FOR_TARGET=$(TARGET_BINUTILS_BUILDDIR)/$(FIND_TARGET_LD)/ld-new \
-	AR_FOR_TARGET=$(TARGET_BINUTILS_BUILDDIR)/binutils/ar \
-	NM_FOR_TARGET=$(TARGET_BINUTILS_BUILDDIR)/binutils/nm-new \
-	STRIP_FOR_TARGET=$(TARGET_BINUTILS_BUILDDIR)/binutils/strip-new \
-	RANLIB_FOR_TARGET=$(TARGET_BINUTILS_BUILDDIR)/binutils/ranlib \
-	OBJDUMP_FOR_TARGET=$(TARGET_BINUTILS_BUILDDIR)/binutils/objdump \
-	READELF_FOR_TARGET=$(TARGET_BINUTILS_BUILDDIR)/binutils/readelf
+export	LD_FOR_TARGET=$(TARGET_BINUTILS_BUILDDIR)/$(FIND_TARGET_LD)/ld-new \
+export	AR_FOR_TARGET=$(TARGET_BINUTILS_BUILDDIR)/binutils/ar \
+export	NM_FOR_TARGET=$(TARGET_BINUTILS_BUILDDIR)/binutils/nm-new \
+export	STRIP_FOR_TARGET=$(TARGET_BINUTILS_BUILDDIR)/binutils/strip-new \
+export	RANLIB_FOR_TARGET=$(TARGET_BINUTILS_BUILDDIR)/binutils/ranlib \
+export	OBJDUMP_FOR_TARGET=$(TARGET_BINUTILS_BUILDDIR)/binutils/objdump \
+export	READELF_FOR_TARGET=$(TARGET_BINUTILS_BUILDDIR)/binutils/readelf
 
 TARGET_MINIMAL_GCC_EXPORTS= \
 export	CC_FOR_TARGET="$(TARGET_GCC_BUILDDIR)/gcc/xgcc \
 		      -B $(TARGET_GCC_BUILDDIR)/gcc \
 		      -isystem $(TARGET_GCC_BUILDDIR)/gcc/include-fixed \
 		      -isystem $(TARGET_GCC_BUILDDIR)/gcc/include"
+
+TARGET_SABERMOD_FLAGS= \
+	$(ENABLE_O3) \
+	$(ENABLE_PTHREAD)
 #
 # We need -Os as the overrides below interfere with --enable-target-optspace.
 # We also need -mandroid for for target libraries to pass linking test
@@ -492,8 +496,10 @@ stmp-config-target-gcc: config.status stmp-install-host-isl stmp-install-host-cl
 	($(canadian_env) \
 	 cd ${GCC_VERSION} ; \
 	 $(TARGET_BINUTILS_EXPORTS) ; \
-	 export CFLAGS_FOR_TARGET="$(CFLAGS_FOR_TARGET) $(ENABLE_O3) $(ENABLE_PTHREAD)" ; \
-	 export CXXFLAGS_FOR_TARGET="$(CXXFLAGS_FOR_TARGET) $(ENABLE_O3) $(ENABLE_PTHREAD)" ; \
+	 export CFLAGS_FOR_BUILD="$(CFLAGS_FOR_BUILD) $(TARGET_SABERMOD_FLAGS)" ; \
+	 export CXXFLAGS_FOR_BUILD="$(CXXFLAGS_FOR_BUILD) $(TARGET_SABERMOD_FLAGS)" ; \
+	 export CFLAGS_FOR_TARGET="$(CFLAGS_FOR_TARGET) $(TARGET_SABERMOD_FLAGS)" ; \
+	 export CXXFLAGS_FOR_TARGET="$(CXXFLAGS_FOR_TARGET) $(TARGET_SABERMOD_FLAGS)" ; \
 	 export LDFLAGS_FOR_TARGET="$(LDFLAGS_FOR_TARGET)" ; \
 	 $(call find-package-srcdir, ${GCC_VERSION})/configure \
 	   $(GCC_CONFIG_ARGS)) && \
@@ -505,8 +511,10 @@ stmp-config-target-gcc: config.status stmp-install-host-isl stmp-build-target-bi
 	($(canadian_env) \
 	 cd ${GCC_VERSION} ; \
 	 $(TARGET_BINUTILS_EXPORTS) ; \
-	 export CFLAGS_FOR_TARGET="$(CFLAGS_FOR_TARGET) $(ENABLE_O3) $(ENABLE_PTHREAD)" ; \
-	 export CXXFLAGS_FOR_TARGET="$(CXXFLAGS_FOR_TARGET) $(ENABLE_O3) $(ENABLE_PTHREAD)" ; \
+	 export CFLAGS_FOR_BUILD="$(CFLAGS_FOR_BUILD) $(TARGET_SABERMOD_FLAGS)" ; \
+	 export CXXFLAGS_FOR_BUILD="$(CXXFLAGS_FOR_BUILD) $(TARGET_SABERMOD_FLAGS)" ; \
+	 export CFLAGS_FOR_TARGET="$(CFLAGS_FOR_TARGET) $(TARGET_SABERMOD_FLAGS)" ; \
+	 export CXXFLAGS_FOR_TARGET="$(CXXFLAGS_FOR_TARGET) $(TARGET_SABERMOD_FLAGS)" ; \
 	 export LDFLAGS_FOR_TARGET="$(LDFLAGS_FOR_TARGET)" ; \
 	 $(call find-package-srcdir, ${GCC_VERSION})/configure \
 	   $(GCC_CONFIG_ARGS)) && \
@@ -516,9 +524,11 @@ build-target-gcc: stmp-build-target-gcc
 stmp-build-target-gcc: stmp-config-target-gcc install-target-binutils
 	($(canadian_env) \
 	 $(MAKE) -C ${GCC_VERSION} \
-		CFLAGS_FOR_TARGET="$(CFLAGS_FOR_TARGET) -O3 -pthread" \
-		CXXFLAGS_FOR_TARGET="$(CXXFLAGS_FOR_TARGET) -O3 -pthread" \
-		LDFLAGS_FOR_TARGET="$(LDFLAGS_FOR_TARGET)" \
+	 CFLAGS_FOR_BUILD="$(CFLAGS_FOR_BUILD) $(TARGET_SABERMOD_FLAGS)" ; \
+	 CXXFLAGS_FOR_BUILD="$(CXXFLAGS_FOR_BUILD) $(TARGET_SABERMOD_FLAGS)" ; \
+	 CFLAGS_FOR_TARGET="$(CFLAGS_FOR_TARGET) $(TARGET_SABERMOD_FLAGS)" \
+	 CXXFLAGS_FOR_TARGET="$(CXXFLAGS_FOR_TARGET) $(TARGET_SABERMOD_FLAGS)" \
+	 LDFLAGS_FOR_TARGET="$(LDFLAGS_FOR_TARGET)" \
 		$(gcc_build_target)) \
 	&& $(STAMP) $@
 install-target-gcc-gcc: stmp-build-target-gcc
