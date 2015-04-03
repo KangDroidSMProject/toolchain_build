@@ -429,7 +429,7 @@ GCC_CONFIG_ARGS += --enable-version-specific-runtime-libs --enable-threads=posix
 	--disable-libitm --disable-plugin --disable-docs --disable-nls --disable-tls
 
 
-ifneq ($(target_os),linux-gnu)
+ifneq ($(target_cpu),x86_64)
 GCC_CONFIG_ARGS += --disable-libstdc__-v3
 endif
 
@@ -463,7 +463,11 @@ ifeq (aarch64,$(target_cpu))
 GCC_CONFIG_ARGS += --with-arch=armv8-a --enable-target-optspace
 BINUTILS_CONFIG_ARGS += --enable-64-bit-bfd --enable-install-libbfd --enable-target-optspace
 
+ifneq ($(SET_TARGET),aarch64-linux-gnu)
 TARGET_ARCH := aarch64-linux-android
+else
+TARGET_ARCH := aarch64-linux-gnu
+endif
 endif
 
 ifeq ($(target_cpu),i686)

@@ -2026,7 +2026,7 @@ case $target in
   arm-newlib-elf)
     BUILD_ANDROID_GCC=no
     ;;
-  aarch64-unknown-linux-android)
+  aarch64-unknown-linux-android | aarch64-unknown-linux-gnu)
     BUILD_ANDROID_GCC=yes
     GDB_TARGET=aarch64-elf-linux
     ;;
