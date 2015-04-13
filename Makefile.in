@@ -74,6 +74,7 @@ GCC_MIN_VERSION_4_5_0:=@GCC_MIN_VERSION_4_5_0@
 GCC_MIN_VERSION_4_8_0:=@GCC_MIN_VERSION_4_8_0@
 GCC_MIN_VERSION_4_9_0:=@GCC_MIN_VERSION_4_9_0@
 GCC_MIN_VERSION_5_0_0:=@GCC_MIN_VERSION_5_0_0@
+GCC_MIN_VERSION_6_0_0:=@GCC_MIN_VERSION_6_0_0@
 GDB_MIN_VERSION_7_2:=@GDB_MIN_VERSION_7_2@
 BINUTILS_MIN_VERSION_2_21:=@BINUTILS_MIN_VERSION_2_21@
 GOLD_MIN_VERSION_2_21:=@GOLD_MIN_VERSION_2_21@
@@ -250,11 +251,20 @@ all: build
 # top level
 ifeq ($(ENABLE_GRAPHITE),yes)
 ifeq (no,$(GCC_MIN_VERSION_5_0_0))
+ifeq (no,$(GCC_MIN_VERSION_6_0_0))
 build: install-host-cloog
-else
+endif
+endif
+
+ifeq (yes,$(GCC_MIN_VERSION_5_0_0))
+build: install-host-isl
+endif
+
+ifeq (yes,$(GCC_MIN_VERSION_6_0_0))
 build: install-host-isl
 endif
 endif
+
 build: build-target-binutils build-target-gcc \
 	build-target-gdb
 
@@ -325,13 +335,23 @@ BINUTILS_CONFIG_ARGS=--prefix=$(prefix) \
 	$(baseargs) --disable-shared --disable-nls --disable-werror
 ifeq ($(ENABLE_GRAPHITE),yes)
 ifeq (no,$(GCC_MIN_VERSION_5_0_0))
+ifeq (no,$(GCC_MIN_VERSION_6_0_0))
 BINUTILS_CONFIG_ARGS+= --with-cloog=${CLOOG_DIR} --with-isl=${ISL_DIR} --with-gmp=${GMP_DIR} \
 	--disable-ppl-version-check --disable-cloog-version-check --disable-isl-version-check $(CLOOG_BACKEND)
-else
+endif
+endif
+endif
+
+ifeq (yes,$(GCC_MIN_VERSION_5_0_0))
 BINUTILS_CONFIG_ARGS+= --with-isl=${ISL_DIR} --with-gmp=${GMP_DIR} \
 	--disable-ppl-version-check --disable-cloog-version-check --disable-isl-version-check
 endif
+
+ifeq (yes,$(GCC_MIN_VERSION_6_0_0))
+BINUTILS_CONFIG_ARGS+= --with-isl=${ISL_DIR} --with-gmp=${GMP_DIR} \
+	--disable-ppl-version-check --disable-cloog-version-check --disable-isl-version-check
 endif
+
 # Enable dual linker support and make gold as default linker when gold is
 # enabled. Notice that our binutils take different --enable-gold=xxx options.
 ifneq ($(ENABLE_GOLD),)
@@ -411,12 +431,22 @@ GCC_CONFIG_ARGS += --with-mpc=$(MPC_DIR)
 # For gcc 4.8+ with graphite optimization, cloog and isl are required.
 ifeq ($(ENABLE_GRAPHITE),yes)
 ifeq (no,$(GCC_MIN_VERSION_5_0_0))
+ifeq (no,$(GCC_MIN_VERSION_6_0_0))
 GCC_CONFIG_ARGS += --with-cloog=${CLOOG_DIR} --with-isl=${ISL_DIR} \
 	--disable-ppl-version-check --disable-cloog-version-check --disable-isl-version-check $(CLOOG_BACKEND)
-else
+endif
+endif
+
+ifeq (yes,$(GCC_MIN_VERSION_5_0_0))
 GCC_CONFIG_ARGS += --with-isl=${ISL_DIR} \
 	--disable-ppl-version-check --disable-cloog-version-check --disable-isl-version-check
 endif
+
+ifeq (yes,$(GCC_MIN_VERSION_6_0_0))
+GCC_CONFIG_ARGS += --with-isl=${ISL_DIR} \
+	--disable-ppl-version-check --disable-cloog-version-check --disable-isl-version-check
+endif
+
 else
 # Disable ppl, isl and cloog just in case the host have them install.
 GCC_CONFIG_ARGS += --without-ppl --without-cloog --without-isl
@@ -439,8 +469,10 @@ endif
 # -fno-short-enums does not work on GCC version >=4.9
 ifeq ($(GCC_MIN_VERSION_4_9_0),no)
 ifeq ($(GCC_MIN_VERSION_5_0_0),no)
+ifeq ($(GCC_MIN_VERSION_6_0_0),no)
 CFLAGS_FOR_TARGET += -fno-short-enums
 CXXFLAGS_FOR_TARGET += -fno-short-emums
+endif
 endif
 endif
 
@@ -493,6 +525,7 @@ endif
 
 # We have to add -mandroid in target CFLAGS and CXXFLAGS
 ifeq (no,$(GCC_MIN_VERSION_5_0_0))
+ifeq (no,$(GCC_MIN_VERSION_6_0_0))
 stmp-config-target-gcc: config.status stmp-install-host-isl stmp-install-host-cloog stmp-build-target-binutils
 	([ -d ${GCC_VERSION} ] || \
 	  mkdir ${GCC_VERSION}) && \
@@ -507,7 +540,10 @@ stmp-config-target-gcc: config.status stmp-install-host-isl stmp-install-host-cl
 	 $(call find-package-srcdir, ${GCC_VERSION})/configure \
 	   $(GCC_CONFIG_ARGS)) && \
 	$(STAMP) $@
-else
+endif
+endif
+
+ifeq (yes,$(GCC_MIN_VERSION_5_0_0))
 stmp-config-target-gcc: config.status stmp-install-host-isl stmp-build-target-binutils
 	([ -d ${GCC_VERSION} ] || \
 	  mkdir ${GCC_VERSION}) && \
@@ -523,6 +559,24 @@ stmp-config-target-gcc: config.status stmp-install-host-isl stmp-build-target-bi
 	   $(GCC_CONFIG_ARGS)) && \
 	$(STAMP) $@
 endif
+
+ifeq (yes,$(GCC_MIN_VERSION_6_0_0))
+stmp-config-target-gcc: config.status stmp-install-host-isl stmp-build-target-binutils
+	([ -d ${GCC_VERSION} ] || \
+	  mkdir ${GCC_VERSION}) && \
+	($(canadian_env) \
+	 cd ${GCC_VERSION} ; \
+	 $(TARGET_BINUTILS_EXPORTS) ; \
+	 export CFLAGS_FOR_BUILD="$(CFLAGS_FOR_BUILD) $(TARGET_SABERMOD_FLAGS)" ; \
+	 export CXXFLAGS_FOR_BUILD="$(CXXFLAGS_FOR_BUILD) $(TARGET_SABERMOD_FLAGS)" ; \
+	 export CFLAGS_FOR_TARGET="$(CFLAGS_FOR_TARGET) $(TARGET_SABERMOD_FLAGS)" ; \
+	 export CXXFLAGS_FOR_TARGET="$(CXXFLAGS_FOR_TARGET) $(TARGET_SABERMOD_FLAGS)" ; \
+	 export LDFLAGS_FOR_TARGET="$(LDFLAGS_FOR_TARGET)" ; \
+	 $(call find-package-srcdir, ${GCC_VERSION})/configure \
+	   $(GCC_CONFIG_ARGS)) && \
+	$(STAMP) $@
+endif
+
 build-target-gcc: stmp-build-target-gcc
 stmp-build-target-gcc: stmp-config-target-gcc install-target-binutils
 	($(canadian_env) \
@@ -721,6 +775,7 @@ endif
 install-host-isl: stmp-install-host-isl
 
 ifeq (no,$(GCC_MIN_VERSION_5_0_0))
+ifeq (no,$(GCC_MIN_VERSION_6_0_0))
 # host cloog rules
 .PHONY: config-host-cloog build-host-cloog install-host-cloog
 config-host-cloog: stmp-config-host-cloog
@@ -771,6 +826,7 @@ stmp-install-host-cloog:
 	$(STAMP) $@
 endif
 install-host-cloog: stmp-install-host-cloog
+endif
 endif
 
 # target gdb rules
