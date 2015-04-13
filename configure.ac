@@ -11,6 +11,20 @@
 # General Public License for more details.
 #
 
+# Copyright (C) 2015 The SaberMod Project
+
+#Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+
+#       http://www.apache.org/licenses/LICENSE-2.0
+
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
 AC_INIT(android-tools,2.0)
 AC_PREREQ(2.59)
 
@@ -30,15 +44,22 @@ AC_PROG_INSTALL
 
 GDB_TARGET=$target
 case $target in
-  arm-unknown-linux-androideabi | arm-unknown-eabi)
+  arm-unknown-linux-androideabi | arm-unknown-eabi | arm-unknown-linux-gnueabi)
     BUILD_ANDROID_GCC=yes
     GDB_TARGET=arm-elf-linux
     ;;
   arm-newlib-elf)
     BUILD_ANDROID_GCC=no
     ;;
-  i[[3456]]86-*-linux-gnu | x86_64-*-linux-gnu | i[[3456]]86-*-linux-android | x86_64-*-linux-android)
+  aarch64-unknown-linux-android | aarch64-unknown-linux-gnu)
     BUILD_ANDROID_GCC=yes
+    GDB_TARGET=aarch64-elf-linux
+    ;;
+  i[[3456]]86-*-linux-android | x86_64-*-linux-android)
+    BUILD_ANDROID_GCC=yes
+    ;;
+  i[[3456]]86-*-linux-gnu | x86_64-*-linux-gnu)
+    BUILD_ANDROID_GCC=no
     ;;
   mips*-*-linux*)
     BUILD_ANDROID_GCC=yes
@@ -149,9 +170,11 @@ do
       # pass --enable-gold=both/gold to binutils and --enable-gold=default
       # gcc-4.6 if dual linker is needed.
       case "$ac_arg" in
-        --enable-gold | --enable-gold=* )
-          enable_gold="$ac_arg"
-          ac_arg="--enable-gold"
+        --enable-gold=default )
+          enable_gold_default=yes
+          ;;
+        --enable-gold )
+          enable_gold=yes
           ;;
         --disable-gold )
           enable_gold=
@@ -378,15 +401,31 @@ if test -f "${gcc_version_file}"; then
   else
     GCC_MIN_VERSION_4_8_0="no"
   fi
+  if test "$GCC_MAJOR" -gt 4 -o \
+              \( "$GCC_MAJOR" -eq 4 -a "$GCC_MINOR" -ge 9 \) ; then
+    GCC_MIN_VERSION_4_9_0="yes"
+  else
+    GCC_MIN_VERSION_4_9_0="no"
+  fi
+  if test "$GCC_MAJOR" -gt 5 -o \
+              \( "$GCC_MAJOR" -eq 5 -a "$GCC_MINOR" -ge 0 \) ; then
+    GCC_MIN_VERSION_5_0_0="yes"
+  else
+    GCC_MIN_VERSION_5_0_0="no"
+  fi
 else
   # No version file, assume it is trunk
   GCC_MIN_VERSION_4_3_0="yes"
   GCC_MIN_VERSION_4_5_0="yes"
   GCC_MIN_VERSION_4_8_0="yes"
+  GCC_MIN_VERSION_4_9_0="yes"
+  GCC_MIN_VERSION_5_0_0="yes"
 fi
 AC_SUBST(GCC_MIN_VERSION_4_3_0)
 AC_SUBST(GCC_MIN_VERSION_4_5_0)
 AC_SUBST(GCC_MIN_VERSION_4_8_0)
+AC_SUBST(GCC_MIN_VERSION_4_9_0)
+AC_SUBST(GCC_MIN_VERSION_5_0_0)
 
 # newlib version (default is 1.16.0)
 # newlib is only used for arm-newlib-eabi for testing
@@ -452,24 +491,10 @@ fi
 AC_SUBST(MPC_VERSION)
 
 if test "$ENABLE_GRAPHITE" == "yes"; then
-# ppl version (default is 0.11.2)
-# ppl is only used for gcc 4.5 and 4.6 with graphite optimization.
-AC_MSG_CHECKING([ppl version])
-AC_ARG_WITH([ppl-version],
-  [  --with-ppl-version=VERSION
-                         use ppl-VERSION (default is 0.11.2)],
-  [if test x"$withval" != x ; then
-     PPL_VERSION="$withval"
-   fi],
-[PPL_VERSION="0.11.2"])
-AC_MSG_RESULT($PPL_VERSION)
-ANDROID_CHECK_PACKAGE(ppl-${PPL_VERSION})
-fi
-AC_SUBST(PPL_VERSION)
-
-if test "$ENABLE_GRAPHITE" == "yes"; then
+# GCC 5.x.x does not require cloog
+if test "$GCC_MIN_VERSION_5_0_0" == "no"; then
 # cloog-ppl or cloog version (default is 0.15.9)
-# cloog is only used for gcc 4.5+ with graphite optimization.
+# cloog is only used for gcc 4.5-4.9 with graphite optimization.
 AC_MSG_CHECKING([cloog version])
 AC_ARG_WITH([cloog-version],
   [  --with-cloog-version=VERSION
@@ -479,20 +504,8 @@ AC_ARG_WITH([cloog-version],
    fi],
 [CLOOG_VERSION="0.15.9"])
 AC_MSG_RESULT($CLOOG_VERSION)
-case $CLOOG_VERSION in
-  0.15*)
-    # CLooG/PPL relies on the PPL for version 0.15.x
-    CLOOG_VERSION="ppl-$CLOOG_VERSION"
-    ;;
-  0.16*|0.17*|0.18*)
-    # CLooG 0.16+ has its own embedded polyhedral library
-    CLOOG_BACKEND="--enable-cloog-backend=isl"
-    ;;
-  *)
-    AC_MSG_ERROR(Unsupported cloog version);
-esac
-AC_SUBST(CLOOG_BACKEND)
 ANDROID_CHECK_PACKAGE(cloog-${CLOOG_VERSION})
+fi
 fi
 AC_SUBST(CLOOG_VERSION)
 
@@ -543,7 +556,7 @@ AC_SUBST(WITH_PYTHON)
 # arm-linux-android.
 if test "$GDB_MIN_VERSION_7_2" == "yes"; then
 case $target in
-  arm-unknown-linux-androideabi | arm-unknown-eabi)
+  arm-unknown-linux-androideabi | arm-unknown-eabi | arm-unknown-linux-gnueabi)
     GDB_TARGET=arm-linux-android
     ;;
     *)

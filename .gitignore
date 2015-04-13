@@ -43,3 +43,4 @@ gcc-SaberMod/
 gdb-android/
 stmp-build-target-gcc
 *.log
+autom4te.cache/
