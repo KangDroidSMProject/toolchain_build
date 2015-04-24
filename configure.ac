@@ -409,9 +409,9 @@ if test -f "${gcc_version_file}"; then
   fi
   if test "$GCC_MAJOR" -gt 5 -o \
               \( "$GCC_MAJOR" -eq 5 -a "$GCC_MINOR" -ge 0 \) ; then
-    GCC_MIN_VERSION_5_0_0="yes"
+    GCC_MIN_VERSION_5_1_0="yes"
   else
-    GCC_MIN_VERSION_5_0_0="no"
+    GCC_MIN_VERSION_5_1_0="no"
   fi
   if test "$GCC_MAJOR" -gt 6 -o \
               \( "$GCC_MAJOR" -eq 6 -a "$GCC_MINOR" -ge 0 \) ; then
@@ -425,14 +425,14 @@ else
   GCC_MIN_VERSION_4_5_0="yes"
   GCC_MIN_VERSION_4_8_0="yes"
   GCC_MIN_VERSION_4_9_0="yes"
-  GCC_MIN_VERSION_5_0_0="yes"
+  GCC_MIN_VERSION_5_1_0="yes"
   GCC_MIN_VERSION_6_0_0="yes"
 fi
 AC_SUBST(GCC_MIN_VERSION_4_3_0)
 AC_SUBST(GCC_MIN_VERSION_4_5_0)
 AC_SUBST(GCC_MIN_VERSION_4_8_0)
 AC_SUBST(GCC_MIN_VERSION_4_9_0)
-AC_SUBST(GCC_MIN_VERSION_5_0_0)
+AC_SUBST(GCC_MIN_VERSION_5_1_0)
 AC_SUBST(GCC_MIN_VERSION_6_0_0)
 
 # newlib version (default is 1.16.0)
@@ -500,7 +500,7 @@ AC_SUBST(MPC_VERSION)
 
 if test "$ENABLE_GRAPHITE" == "yes"; then
 # GCC 5.x.x does not require cloog
-if test "$GCC_MIN_VERSION_5_0_0" == "no"; then
+if test "$GCC_MIN_VERSION_5_1_0" == "no"; then
 if test "$GCC_MIN_VERSION_6_0_0" == "no"; then
 # cloog-ppl or cloog version (default is 0.15.9)
 # cloog is only used for gcc 4.5-4.9 with graphite optimization.

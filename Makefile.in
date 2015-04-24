@@ -73,7 +73,7 @@ GCC_MIN_VERSION_4_3_0:=@GCC_MIN_VERSION_4_3_0@
 GCC_MIN_VERSION_4_5_0:=@GCC_MIN_VERSION_4_5_0@
 GCC_MIN_VERSION_4_8_0:=@GCC_MIN_VERSION_4_8_0@
 GCC_MIN_VERSION_4_9_0:=@GCC_MIN_VERSION_4_9_0@
-GCC_MIN_VERSION_5_0_0:=@GCC_MIN_VERSION_5_0_0@
+GCC_MIN_VERSION_5_1_0:=@GCC_MIN_VERSION_5_1_0@
 GCC_MIN_VERSION_6_0_0:=@GCC_MIN_VERSION_6_0_0@
 GDB_MIN_VERSION_7_2:=@GDB_MIN_VERSION_7_2@
 BINUTILS_MIN_VERSION_2_21:=@BINUTILS_MIN_VERSION_2_21@
@@ -250,13 +250,13 @@ all: build
 
 # top level
 ifeq ($(ENABLE_GRAPHITE),yes)
-ifeq (no,$(GCC_MIN_VERSION_5_0_0))
+ifeq (no,$(GCC_MIN_VERSION_5_1_0))
 ifeq (no,$(GCC_MIN_VERSION_6_0_0))
 build: install-host-cloog
 endif
 endif
 
-ifeq (yes,$(GCC_MIN_VERSION_5_0_0))
+ifeq (yes,$(GCC_MIN_VERSION_5_1_0))
 build: install-host-isl
 endif
 
@@ -334,7 +334,7 @@ BINUTILS_CONFIG_ARGS=--prefix=$(prefix) \
 	--target=${cur_target} --host=${cur_host} --build=${cur_build} \
 	$(baseargs) --disable-shared --disable-nls --disable-werror
 ifeq ($(ENABLE_GRAPHITE),yes)
-ifeq (no,$(GCC_MIN_VERSION_5_0_0))
+ifeq (no,$(GCC_MIN_VERSION_5_1_0))
 ifeq (no,$(GCC_MIN_VERSION_6_0_0))
 BINUTILS_CONFIG_ARGS+= --with-cloog=${CLOOG_DIR} --with-isl=${ISL_DIR} --with-gmp=${GMP_DIR} \
 	--disable-ppl-version-check --disable-cloog-version-check --disable-isl-version-check $(CLOOG_BACKEND)
@@ -342,7 +342,7 @@ endif
 endif
 endif
 
-ifeq (yes,$(GCC_MIN_VERSION_5_0_0))
+ifeq (yes,$(GCC_MIN_VERSION_5_1_0))
 BINUTILS_CONFIG_ARGS+= --with-isl=${ISL_DIR} --with-gmp=${GMP_DIR} \
 	--disable-ppl-version-check --disable-cloog-version-check --disable-isl-version-check
 endif
@@ -430,14 +430,14 @@ GCC_CONFIG_ARGS += --with-mpc=$(MPC_DIR)
 # For gcc 4.5 and 4.6 with graphite optimization, cloog and ppl are required.
 # For gcc 4.8+ with graphite optimization, cloog and isl are required.
 ifeq ($(ENABLE_GRAPHITE),yes)
-ifeq (no,$(GCC_MIN_VERSION_5_0_0))
+ifeq (no,$(GCC_MIN_VERSION_5_1_0))
 ifeq (no,$(GCC_MIN_VERSION_6_0_0))
 GCC_CONFIG_ARGS += --with-cloog=${CLOOG_DIR} --with-isl=${ISL_DIR} \
 	--disable-ppl-version-check --disable-cloog-version-check --disable-isl-version-check $(CLOOG_BACKEND)
 endif
 endif
 
-ifeq (yes,$(GCC_MIN_VERSION_5_0_0))
+ifeq (yes,$(GCC_MIN_VERSION_5_1_0))
 GCC_CONFIG_ARGS += --with-isl=${ISL_DIR} \
 	--disable-ppl-version-check --disable-cloog-version-check --disable-isl-version-check
 endif
@@ -468,7 +468,7 @@ endif
 
 # -fno-short-enums does not work on GCC version >=4.9
 ifeq ($(GCC_MIN_VERSION_4_9_0),no)
-ifeq ($(GCC_MIN_VERSION_5_0_0),no)
+ifeq ($(GCC_MIN_VERSION_5_1_0),no)
 ifeq ($(GCC_MIN_VERSION_6_0_0),no)
 CFLAGS_FOR_TARGET += -fno-short-enums
 CXXFLAGS_FOR_TARGET += -fno-short-emums
@@ -524,7 +524,7 @@ GCC_CONFIG_ARGS += $(ENABLE_GOLD)
 endif
 
 # We have to add -mandroid in target CFLAGS and CXXFLAGS
-ifeq (no,$(GCC_MIN_VERSION_5_0_0))
+ifeq (no,$(GCC_MIN_VERSION_5_1_0))
 ifeq (no,$(GCC_MIN_VERSION_6_0_0))
 stmp-config-target-gcc: config.status stmp-install-host-isl stmp-install-host-cloog stmp-build-target-binutils
 	([ -d ${GCC_VERSION} ] || \
@@ -543,7 +543,7 @@ stmp-config-target-gcc: config.status stmp-install-host-isl stmp-install-host-cl
 endif
 endif
 
-ifeq (yes,$(GCC_MIN_VERSION_5_0_0))
+ifeq (yes,$(GCC_MIN_VERSION_5_1_0))
 stmp-config-target-gcc: config.status stmp-install-host-isl stmp-build-target-binutils
 	([ -d ${GCC_VERSION} ] || \
 	  mkdir ${GCC_VERSION}) && \
@@ -774,7 +774,7 @@ stmp-install-host-isl:
 endif
 install-host-isl: stmp-install-host-isl
 
-ifeq (no,$(GCC_MIN_VERSION_5_0_0))
+ifeq (no,$(GCC_MIN_VERSION_5_1_0))
 ifeq (no,$(GCC_MIN_VERSION_6_0_0))
 # host cloog rules
 .PHONY: config-host-cloog build-host-cloog install-host-cloog
