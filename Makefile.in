@@ -78,7 +78,6 @@ GCC_MIN_VERSION_6_0_0:=@GCC_MIN_VERSION_6_0_0@
 GDB_MIN_VERSION_7_2:=@GDB_MIN_VERSION_7_2@
 BINUTILS_MIN_VERSION_2_21:=@BINUTILS_MIN_VERSION_2_21@
 GOLD_MIN_VERSION_2_21:=@GOLD_MIN_VERSION_2_21@
-CLOOG_BACKEND:=@CLOOG_BACKEND@
 ENABLE_GRAPHITE:=@ENABLE_GRAPHITE@
 PACKAGE_TO_SRCDIR:=@package_to_srcdir@
 BUILD_ANDROID_GCC:=@BUILD_ANDROID_GCC@
@@ -337,7 +336,7 @@ ifeq ($(ENABLE_GRAPHITE),yes)
 ifeq (no,$(GCC_MIN_VERSION_5_1_0))
 ifeq (no,$(GCC_MIN_VERSION_6_0_0))
 BINUTILS_CONFIG_ARGS+= --with-cloog=${CLOOG_DIR} --with-isl=${ISL_DIR} --with-gmp=${GMP_DIR} \
-	--disable-ppl-version-check --disable-cloog-version-check --disable-isl-version-check $(CLOOG_BACKEND)
+	--disable-ppl-version-check --disable-cloog-version-check --disable-isl-version-check
 endif
 endif
 endif
@@ -433,7 +432,7 @@ ifeq ($(ENABLE_GRAPHITE),yes)
 ifeq (no,$(GCC_MIN_VERSION_5_1_0))
 ifeq (no,$(GCC_MIN_VERSION_6_0_0))
 GCC_CONFIG_ARGS += --with-cloog=${CLOOG_DIR} --with-isl=${ISL_DIR} \
-	--disable-ppl-version-check --disable-cloog-version-check --disable-isl-version-check $(CLOOG_BACKEND)
+	--disable-ppl-version-check --disable-cloog-version-check --disable-isl-version-check
 endif
 endif
 
