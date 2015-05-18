@@ -15,29 +15,14 @@ success ()
     echo "SUCCESS: $@"
 }
 
-if [ $SET_TARGET_BUILD = "CLOOG" ];
+if [ $SET_TARGET_BUILD = "HOST" ];
 then
     echo "";
     echo "";
     echo "";
     success "*****************ㄅㄩςς∑ㄅㄅ*****************
                                                          
-             CLOOG has successfully built                
-                                                         
-         *****************ㄅㄩςς∑ㄅㄅ*****************";
-    echo "";
-    echo "";
-    echo "";
-fi;
-
-if [ $SET_TARGET_BUILD = "ISL" ];
-then
-    echo "";
-    echo "";
-    echo "";
-    success "*****************ㄅㄩςς∑ㄅㄅ*****************
-                                                         
-             ISL has successfully built                  
+             HOST libraries have successfully built                
                                                          
          *****************ㄅㄩςς∑ㄅㄅ*****************";
     echo "";

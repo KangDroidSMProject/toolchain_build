@@ -15,7 +15,7 @@ panic ()
     echo "ERROR: $@";
 }
 
-if [ $SET_TARGET_BUILD = "CLOOG" ];
+if [ $SET_TARGET_BUILD = "HOST" ];
 then
     echo "";
     echo "";
@@ -23,36 +23,7 @@ then
     panic "**********************************ﾓ∆ⅰﾚㄩЯ∑**********************************
                                                                                       
            Sorry your build failed because                                            
-           cloog failed to build the required                                         
-           libraries.  Read:                                                          
-           https://gitlab.com/SaberMod/sabermod-manifest/blob/master/README.md        
-           for system requirements and instructions.                                  
-                                                                                      
-           If you feel up to it, go ahead and send the logs to:                       
-           sabermod.team@gmail.com                                                    
-           for assistance.                                                            
-                                                                                      
-           Log is located at:                                                         
-           $MAKE_LOG                                                                  
-                                                                                      
-       **********************************ﾓ∆ⅰﾚㄩЯ∑**********************************";
-    echo "";
-    echo "";
-    echo "";
-fi;
-
-if [ $SET_TARGET_BUILD = "ISL" ];
-then
-    echo "";
-    echo "";
-    echo "";
-    panic "**********************************ﾓ∆ⅰﾚㄩЯ∑**********************************
-                                                                                      
-           Sorry your build failed because                                            
-           ISL failed to build the required                                           
-           libraries.  Read:                                                          
-           https://gitlab.com/SaberMod/sabermod-manifest/blob/master/README.md        
-           for system requirements and instructions.                                  
+           required host libraries failed to build                             
                                                                                       
            If you feel up to it, go ahead and send the logs to:                       
            sabermod.team@gmail.com                                                    
