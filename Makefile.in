@@ -173,9 +173,17 @@ TARGET_SABERMOD_FLAGS= \
 # 
 # To build libstdc++ with RTTI and exceptions do:
 #
-#export CFLAGS_FOR_TARGET= -fexceptions
-#export CXXFLAGS_FOR_TARGET= -frtti
-#
+
+# Seems this is needed for andorid ROM toolchains on GCC >=5
+ifeq (yes,$(GCC_MIN_VERSION_5_1_0))
+export CFLAGS_FOR_TARGET= -fexceptions
+export CXXFLAGS_FOR_TARGET= -frtti
+endif
+
+ifeq (no,$(GCC_MIN_VERSION_6_0_0))
+export CFLAGS_FOR_TARGET= -fexceptions
+export CXXFLAGS_FOR_TARGET= -frtti
+endif
 
 CFLAGS_FOR_TARGET += -O2 -Os -g
 CXXFLAGS_FOR_TARGET += $(CFLAGS_FOR_TARGET)
