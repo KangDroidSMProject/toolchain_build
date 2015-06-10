@@ -317,7 +317,7 @@ AC_MSG_RESULT($BINUTILS_VERSION)
 AC_SUBST(BINUTILS_VERSION)
 ANDROID_CHECK_PACKAGE(binutils-${BINUTILS_VERSION})
 
-m4_pattern_allow(AM_INIT_AUTOMAKE)
+m4_pattern_allow([AM_INIT_AUTOMAKE])
 # macro to find binutils version for dual linker support.
 # For binutils-2.21 and up, add --enable-gold=default,
 # else add --enable-gold=both/gold.
