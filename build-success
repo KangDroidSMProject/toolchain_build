@@ -15,19 +15,76 @@ success ()
     echo "SUCCESS: $@"
 }
 
-if [ $SET_TARGET_BUILD = "HOST" ];
+if [ $SET_TARGET_BUILD = "CLOOG" ];
 then
-    echo "";
-    echo "";
-    echo "";
-    success "*****************ㄅㄩςς∑ㄅㄅ*****************
-                                                         
-             HOST libraries have successfully built                
-                                                         
-         *****************ㄅㄩςς∑ㄅㄅ*****************";
-    echo "";
-    echo "";
-    echo "";
+    if [ $CLOOG_INSTALLED = "yes" ];
+    then
+        echo "";
+        echo "";
+        echo "";
+        success "*****************ㄅㄩςς∑ㄅㄅ*****************
+                                                             
+                 CLOOG libraries have successfully built                
+                                                             
+             *****************ㄅㄩςς∑ㄅㄅ*****************";
+        echo "";
+        echo "";
+        echo "";
+    fi;
+fi;
+
+if [ $SET_TARGET_BUILD = "ISL" ];
+then
+    if [ $ISL_INSTALLED = "yes" ];
+    then
+        echo "";
+        echo "";
+        echo "";
+        success "*****************ㄅㄩςς∑ㄅㄅ*****************
+                                                             
+                 ISL libraries have successfully built                
+                                                             
+             *****************ㄅㄩςς∑ㄅㄅ*****************";
+        echo "";
+        echo "";
+        echo "";
+    fi;
+fi;
+
+if [ $SET_TARGET_BUILD = "MPFR" ];
+then
+    if [ $MPFR_INSTALLED = "yes" ];
+    then
+        echo "";
+        echo "";
+        echo "";
+        success "*****************ㄅㄩςς∑ㄅㄅ*****************
+                                                             
+                 MPFR libraries have successfully built                
+                                                             
+             *****************ㄅㄩςς∑ㄅㄅ*****************";
+        echo "";
+        echo "";
+        echo "";
+    fi;
+fi;
+
+if [ $SET_TARGET_BUILD = "GMP" ];
+then
+    if [ $GMP_INSTALLED = "yes" ];
+    then
+        echo "";
+        echo "";
+        echo "";
+        success "*****************ㄅㄩςς∑ㄅㄅ*****************
+                                                             
+                 GMP libraries have successfully built                
+                                                             
+             *****************ㄅㄩςς∑ㄅㄅ*****************";
+        echo "";
+        echo "";
+        echo "";
+    fi;
 fi;
 
 if [ $SET_TARGET_BUILD = "GCC" ];

@@ -15,7 +15,59 @@ panic ()
     echo "ERROR: $@";
 }
 
-if [ $SET_TARGET_BUILD = "HOST" ];
+if [ -n $CLOOG_INSTALLED ];
+then
+    if [ $CLOOG_INSTALLED = "no" ];
+    then
+        echo "";
+        echo "";
+        echo "";
+        panic "**********************************ﾓ∆ⅰﾚㄩЯ∑**********************************
+                                                                                          
+               Sorry your build failed because                                            
+               host CLOOG libraries failed to install                                       
+                                                                                          
+               Email log to:                                                              
+               sabermod.team@gmail.com                                                    
+               for assistance.                                                            
+                                                                                          
+               Log is located at:                                                         
+               $MAKE_LOG                                                                  
+                                                                                          
+           **********************************ﾓ∆ⅰﾚㄩЯ∑**********************************";
+        echo "";
+        echo "";
+        echo "";
+    fi;
+fi;
+
+if [ -n $ISL_INSTALLED ];
+then
+    if [ $ISL_INSTALLED = "no" ];
+    then
+        echo "";
+        echo "";
+        echo "";
+        panic "**********************************ﾓ∆ⅰﾚㄩЯ∑**********************************
+                                                                                          
+               Sorry your build failed because                                            
+               host ISL libraries failed to install                                       
+                                                                                          
+               Email log to:                                                              
+               sabermod.team@gmail.com                                                    
+               for assistance.                                                            
+                                                                                          
+               Log is located at:                                                         
+               $MAKE_LOG                                                                  
+                                                                                          
+           **********************************ﾓ∆ⅰﾚㄩЯ∑**********************************";
+        echo "";
+        echo "";
+        echo "";
+    fi;
+fi;
+
+if [ $MPFR_INSTALLED = "no" ];
 then
     echo "";
     echo "";
@@ -23,9 +75,32 @@ then
     panic "**********************************ﾓ∆ⅰﾚㄩЯ∑**********************************
                                                                                       
            Sorry your build failed because                                            
-           required host libraries failed to build                             
+           host MPFR libraries failed to install                                       
                                                                                       
-           If you feel up to it, go ahead and send the logs to:                       
+           Email log to:                                                              
+           sabermod.team@gmail.com                                                    
+           for assistance.                                                            
+                                                                                      
+           Log is located at:                                                         
+           $MAKE_LOG                                                                  
+                                                                                      
+       **********************************ﾓ∆ⅰﾚㄩЯ∑**********************************";
+    echo "";
+    echo "";
+    echo "";
+fi;
+
+if [ $GMP_INSTALLED = "no" ];
+then
+    echo "";
+    echo "";
+    echo "";
+    panic "**********************************ﾓ∆ⅰﾚㄩЯ∑**********************************
+                                                                                      
+           Sorry your build failed because                                            
+           host GMP libraries failed to install                                       
+                                                                                      
+           Email log to:                                                              
            sabermod.team@gmail.com                                                    
            for assistance.                                                            
                                                                                       
@@ -50,7 +125,7 @@ then
            https://gitlab.com/SaberMod/sabermod-manifest/blob/master/README.md        
            for system requirements and instructions.                                  
                                                                                       
-           If you feel up to it, go ahead and send the logs to:                       
+           Email log to:                                                              
            sabermod.team@gmail.com                                                    
            for assistance.                                                            
                                                                                       
@@ -63,3 +138,8 @@ then
     echo "";
 fi;
 
+unset CLOOG_INSTALLED;
+unset ISL_INSTALLED;
+unset MPFR_INSTALLED;
+unset GMP_INSTALLED;
+unset SET_TARGET_BUILD;
