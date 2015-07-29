@@ -37,6 +37,7 @@ config.status
 config.log
 cloog-0.18.2/
 cloog-0.18.3/
+cloog-0.18.4/
 binutils-gnu/
 Makefile
 binutils-android/
