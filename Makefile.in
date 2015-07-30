@@ -520,30 +520,14 @@ else
 TARGET_ARCH := arm-linux-androideabi
 endif
 
-ifdef CORTEX_A15
-ifeq ($(strip $(CORTEX_A15)),no)
-GCC_CONFIG_ARGS += --with-float=soft --with-fpu=neon --with-arch=armv7-a --enable-target-optspace
-else
-    ifeq ($(strip $(CORTEX_A15)),yes)
-        GCC_CONFIG_ARGS += --with-float=soft --with-fpu=neon --with-cpu=cortex-a15 --with-tune=cortex-a15 --enable-target-optspace
-    endif
-endif
-endif
+GCC_CONFIG_ARGS += --with-float=soft --with-fpu=neon --with-arch=armv7-a $(CORTEX_FLAGS) --enable-target-optspace
     
 BINUTILS_CONFIG_ARGS += --enable-install-libbfd --enable-target-optspace
 endif
 
 # Android and ARM64
 ifeq (aarch64,$(target_cpu))
-ifdef CORTEX_A53
-ifeq ($(strip $(CORTEX_A53)),no)
-GCC_CONFIG_ARGS += --with-arch=armv8-a --enable-target-optspace
-else
-    ifeq ($(strip $(CORTEX_A53)),yes)
-        GCC_CONFIG_ARGS += --with-cpu=cortex-a53 --with-tune=cortex-a53 --enable-target-optspace
-    endif
-endif
-endif
+GCC_CONFIG_ARGS += --with-arch=armv8-a $(CORTEX_FLAGS) --enable-target-optspace
 
 BINUTILS_CONFIG_ARGS += --enable-64-bit-bfd --enable-install-libbfd --enable-target-optspace
 
