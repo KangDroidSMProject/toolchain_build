@@ -520,7 +520,7 @@ else
 TARGET_ARCH := arm-linux-androideabi
 endif
 
-GCC_CONFIG_ARGS += --with-float=soft --with-fpu=neon --with-arch=armv7-a $(CORTEX_FLAGS) --enable-target-optspace
+GCC_CONFIG_ARGS += --with-float=soft $(NEON_FLAGS) --with-arch=armv7-a $(CORTEX_FLAGS) --enable-target-optspace
     
 BINUTILS_CONFIG_ARGS += --enable-install-libbfd --enable-target-optspace
 endif
